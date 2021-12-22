@@ -7,7 +7,7 @@ def dp(n):
     if n == 2:
         print(2)
         return
-    if n==3:
+    if n == 3:
         print(4)
         return
     lst = [1 for _ in range(n)]
