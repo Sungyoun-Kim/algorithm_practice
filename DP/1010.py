@@ -15,9 +15,6 @@ def solution(lst):
     print(dp[R-1][L-1])
 
 
-
-
-
 if __name__ == "__main__":
     T = int(sys.stdin.readline())
     C = []
