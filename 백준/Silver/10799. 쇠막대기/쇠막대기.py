@@ -1,34 +1,18 @@
-import sys
+bar_razor = list(input())
+answer = 0
+stack = []
 
-if __name__ =="__main__":
-    expression = list(sys.stdin.readline().rstrip())
-    razors =[]
-    sticks = []
-    stack = []
+for i in range(len(bar_razor)):
+    if bar_razor[i] == '(': #스택 쌓기
+        stack.append('(')
+        
+    else:
+        if bar_razor[i-1] == '(': #()라면 (를 pop하고 현재 스택에 들어있는 ( 수만큼 값을 더해준다.
+            stack.pop()
+            answer += len(stack)
+            
+        else:
+            stack.pop() 
+            answer += 1 #끄트머리 막대기 부분을 더해준다
 
-    idx = 0
-    while idx < len(expression):
-        if expression[idx] == '(' and expression[idx + 1] == ')':
-            razors.append((idx, idx + 1))
-            idx += 2
-            continue
-        if expression[idx] == '(':
-            stack.append(idx)
-            idx += 1
-            continue
-        if expression[idx] == ')':
-            sticks.append((stack.pop(), idx))
-            idx += 1
-            continue
-    answer = len(sticks)
-    for start,end in sticks:
-        for razor in razors:
-            if start <= razor[0] <= end:
-                answer+=1
-    print(answer)
-
-
-
-
-
-
+print(answer)
