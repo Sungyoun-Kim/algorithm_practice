@@ -1,12 +1,16 @@
-n = int(input())
-a = [0]*n
+import sys
 
-for i in range(n):
-    a[i] = list(map(int,input().split()))
-    
-for i in range(1,n):
-    a[i][0]= min(a[i-1][1],a[i-1][2]) + a[i][0]
-    a[i][1]= min(a[i-1][0],a[i-1][2]) + a[i][1]
-    a[i][2]= min(a[i-1][0],a[i-1][1]) + a[i][2]
+N = int(sys.stdin.readline())
+houses = [0 for _ in range(N)]
+for i in range(N):
+    houses[i]=list(map(int,sys.stdin.readline().split()))
+dp = [[10e9,10e9,10e9] for _ in range(N)]
+dp[0] = houses[0]
 
-print(min(a[n-1][0],a[n-1][1],a[n-1][2]))
+for i in range(1,N):
+    for j in range(3):
+        for k in range(1,3):
+            idx = (j+k) % 3 
+            dp[i][j]= min(dp[i][j],dp[i-1][idx] + houses[i][j])
+
+print(min(dp[-1]))
