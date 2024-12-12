@@ -34,3 +34,5 @@ def solution():
                 move-=1
             
 solution()
+
+//생각해보니까 파이썬이라 음수 인덱스로 접근 되는데;;
