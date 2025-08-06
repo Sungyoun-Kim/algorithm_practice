@@ -1,60 +1,35 @@
 import sys
 
-N = int(sys.stdin.readline())
-A = list(map(int,sys.stdin.readline().split()))
-# +,-,*,/
-op = list(map(int,sys.stdin.readline().split()))
-opArr = []
-for i in range(op[0]):
-    opArr.append('+')
-for i in range(op[1]):
-    opArr.append('-')
-for i in range(op[2]):
-    opArr.append('*')
-for i in range(op[3]):
-    opArr.append('/')
+def main():
+    N = int(sys.stdin.readline())
+    numbers = list(map(int, sys.stdin.readline().split()))
+    add, sub, mul, div = map(int, sys.stdin.readline().split())
+    
+    min_val = float('inf')
+    max_val = -float('inf')
+    
+    def backtrack(result, idx, add, sub, mul, div):
+        nonlocal min_val, max_val
+        if idx == N:
+            min_val = min(min_val, result)
+            max_val = max(max_val, result)
+            return
+        
+        if add > 0:
+            backtrack(result + numbers[idx], idx + 1, add - 1, sub, mul, div)
+        if sub > 0:
+            backtrack(result - numbers[idx], idx + 1, add, sub - 1, mul, div)
+        if mul > 0:
+            backtrack(result * numbers[idx], idx + 1, add, sub, mul - 1, div)
+        if div > 0:
+            if result < 0:
+                backtrack(-(abs(result) // numbers[idx]), idx + 1, add, sub, mul, div - 1)
+            else:
+                backtrack(result // numbers[idx], idx + 1, add, sub, mul, div - 1)
+    
+    backtrack(numbers[0], 1, add, sub, mul, div)
+    print(max_val)
+    print(min_val)
 
-min_result = float('inf')
-max_result = float('-inf')
-
-def calc(a,b,op):
-    if op == '+':
-        return a+b
-    elif op == '-':
-        return a-b
-    elif op == '*':
-        return a*b
-    elif op == '/':
-        if a <0:
-            a= abs(a)
-            result = a //b 
-            return -result
-        else:
-            return a//b
-
-
-visited = [False for _ in range(len(opArr))]
-selectedOp =[]
-
-def backtracking(idx):
-    global min_result
-    global max_result
-
-    if idx == N-1:
-        result = A[0]
-        for i in range(N-1):
-            result = calc(result,A[i+1],selectedOp[i])
-        min_result = min(min_result,result)
-        max_result = max(max_result,result)
-        return 
-    for i in range(len(opArr)):
-        if not visited[i]:
-            visited[i] = True
-            selectedOp.append(opArr[i])   
-            backtracking(idx+1)
-            visited[i] = False
-            selectedOp.pop()
-
-backtracking(0)
-print(max_result)
-print(min_result)
+if __name__ == "__main__":
+    main()
